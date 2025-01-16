@@ -77,11 +77,8 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink
-                                            :href="route('profile.edit')"
-                                        >
-                                            Profile
-                                        </DropdownLink>
+                                        <DropdownLink :href="route('profile.show', $page.props.auth.user.id)"> View Profile </DropdownLink>
+                                        <DropdownLink :href="route('profile.edit')"> Edit Profile </DropdownLink>
                                         <DropdownLink
                                             :href="route('logout')"
                                             method="post"
@@ -176,9 +173,8 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')">
-                                Profile
-                            </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('profile.show', $page.props.auth.user.id)"> Show Profile </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('profile.edit')"> Edit Profile </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 :href="route('logout')"
                                 method="post"
