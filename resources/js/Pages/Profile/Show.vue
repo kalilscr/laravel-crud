@@ -4,14 +4,14 @@ import Heading from '@/Components/Heading.vue';
 import Chirp from '@/Components/Chirp.vue';
 import { Head } from '@inertiajs/vue3';
 
-defineProps(['user','chirps']);
+defineProps(['user','chirps','following']);
 </script>
 
 <template>
     <Head :title="user.name" />
 
     <AuthenticatedLayout>
-        <Heading :user="user"/>
+        <Heading :user="user" :following="following"/>
         <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
             <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
                 <Chirp

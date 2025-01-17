@@ -2,32 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Follower;
+//use App\Models\Follower;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\Rule;
 
 class FollowerController extends Controller
 {
-    /**
-     * Follow an user.
-     */
-    public function follow(Request $request, $id)
-    {
-        $user = User::find($id);
+    // /**
+    //  * Follow an user.
+    //  */
+    // public function follow(Request $request, $id)
+    // {
+    //     $user = User::find($id);
 
-        $user->followers()->attach(auth()->user()->id);
+    //     $user->followers()->attach(auth()->user()->id);
+
+    //     return back();
+    // }
+
+    // /**
+    //  * Unfollow an user.
+    //  */
+    // public function unfollow(Request $request, $id)
+    // {
+    //     $user = User::find($id);
+
+    //     $user->followers()->detach(auth()->user()->id);
+
+    //     return back();
+    // }
+
+    public function store(Request $request):  RedirectResponse
+    {
+        $validated = $request->validate([
+               'id' => [
+               'required',
+               'integer',
+               'numeric',
+               Rule::notIn([Auth()->id()]),
+               'exists:users,id'
+           ]
+       ]);
+
+        auth()->user()->following()->attach($validated['id']);
 
         return back();
-    }
+   }
 
-    /**
-     * Unfollow an user.
-     */
-    public function unfollow(Request $request, $id)
-    {
-        $user = User::find($id);
-
-        $user->followers()->detach(auth()->user()->id);
+   public function destroy(int $id): RedirectResponse
+   {
+        auth()->user()->following()->detach($id);
 
         return back();
-    }
+   }
 }

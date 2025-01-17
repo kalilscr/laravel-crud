@@ -68,6 +68,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Show',[
             'user' => $user->only(['id', 'name', 'created_at']),
             'chirps' => $user->chirps()->latest()->get()->map(fn (Chirp $chirp) => $chirp->setRelation('user',$user)),
+            'following' => auth()->user()->following()->where('user_id', $user->id)->exists(),
         ]);
     }
 }

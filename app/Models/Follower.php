@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+// namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\Model;
 
-class Follower extends Model
-{
-    protected $fillable = [
-        'user_id',
-        'follower_id',
-    ];
-}
+// class Follower extends Model
+// {
+//     protected $fillable = [
+//         'user_id',
+//         'follower_id',
+//     ];
+// }
