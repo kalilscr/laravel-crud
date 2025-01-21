@@ -28,20 +28,25 @@ class SendChirpCreatedNotificationsTest extends TestCase
         );
     }
 
-    public function test_notification_is_sent_to_all_but_chirp_creator()
+    public function test_notifications_are_only_sent_to_users_who_follow_author()
     {
         Notification::fake();
 
-        $users = User::factory(2)->create();
+        $user = User::factory()->create();
 
-        $chirp = Chirp::factory()->create();
+        $followers = User::factory(2)->create();
+        $nonFollower = User::factory()->create();
+        $user->followers()->attach($followers->pluck('id'));
+        Chirp::factory()
+             ->for($user)
+             ->create();
 
         Notification::assertSentTo(
-            [$users], NewChirp::class
+            [$followers], NewChirp::class
         );
 
         Notification::assertNotSentTo(
-            [$chirp->user], NewChirp::class
+            [$user, $nonFollower], NewChirp::class
         );
     }
 }

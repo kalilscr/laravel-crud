@@ -151,6 +151,7 @@ class ProfileTest extends TestCase
                         ->etc()
                     )
                 )
+                ->has('following')
         );
     }
 
@@ -174,6 +175,7 @@ class ProfileTest extends TestCase
                     ->etc()
                 )
                 ->has('chirps',0)
+                ->has('following')
             );
     }
 

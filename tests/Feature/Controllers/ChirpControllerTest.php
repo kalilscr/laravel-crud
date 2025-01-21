@@ -204,4 +204,34 @@ class ChirpControllerTest extends TestCase
 
         $this->assertDatabaseCount('Chirps',1);
     }
+
+    public function test_only_chirps_by_people_the_user_follows_are_returned_if_filter_is_true()
+    {
+        $following = User::factory()
+            ->has(Chirp::factory())
+            ->create();
+
+        $user = User::factory()
+                ->hasAttached($following,[],'following')
+                ->create();
+
+        $nonFollowedChirps = Chirp::factory(10)->create();
+
+        $this->actingAs($user)
+            ->get(route('chirps.index', ['filter' => 'true']))
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Chirps/Index')
+                ->has('chirps', 1, fn (Assert $page) => $page
+                    ->where('message', $following->chirps->first()->message)
+                    ->etc()
+                    ->has('user', fn (Assert $page) => $page
+                        ->where('id', $following->id)
+                        ->where('name', $following->name)
+                        ->missing('password')
+                        ->missing('email')
+                    )
+                )
+        );
+    }
+
 }
