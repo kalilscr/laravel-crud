@@ -40,7 +40,7 @@ const showingNavigationDropdown = ref(false);
                                     Dashboard
                                 </NavLink>
                                 <NavLink
-                                    :href="route('chirps.index')"
+                                    :href="route('chirps.index', { filter: 'false'})"
                                     :active="route().current('chirps.index')"
                                 >
                                     Chirps
@@ -150,7 +150,7 @@ const showingNavigationDropdown = ref(false);
                             Dashboard
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
-                        :href="route('chirps.index')"
+                        :href="route('chirps.index', { filter: 'false'})"
                         :active="route().current('chirps.index')"
                         >
                             Chirps

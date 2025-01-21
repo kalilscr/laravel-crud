@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-//use App\Models\Follower;
+use App\Models\User;
+use App\Events\UserFollowed;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rule;
@@ -46,6 +47,9 @@ class FollowerController extends Controller
        ]);
 
         auth()->user()->following()->attach($validated['id']);
+
+        $following = User::findOrFail($validated['id']);
+        UserFollowed::dispatch($following, Auth()->user());
 
         return back();
    }
