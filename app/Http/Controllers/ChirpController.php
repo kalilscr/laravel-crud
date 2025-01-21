@@ -22,7 +22,7 @@ class ChirpController extends Controller
             ->when($request->input('filter') === 'true', fn($q) =>
                 $q->whereIn(
                     'user_id',
-                     auth()->user()->follows->pluck('id')
+                     auth()->user()->following->pluck('id')
                      ->merge(auth()->id())
                     )
             )
