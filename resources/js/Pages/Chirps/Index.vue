@@ -3,10 +3,15 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Chirp from '@/Components/Chirp.vue';
 import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import FilterTabs from '@/Components/FilterTabs.vue';
+import Tabs from '@/Components/Tabs.vue';
 import { useForm, Head } from '@inertiajs/vue3';
 
 defineProps(['chirps']);
+
+const tabs = [
+    {href:route('chirps.index', { filter: 'false'}), active:route().current('chirps.index', { filter: 'false'}), only:['chirps'], text:'All'},
+    {href:route('chirps.index', { filter: 'true'}), active:route().current('chirps.index', { filter: 'true'}), only:['chirps'],  text:'Following'},
+]
 
 const form = useForm({
     message: '',
@@ -27,12 +32,12 @@ const form = useForm({
                 <InputError :message="form.errors.message" class="mt-2" />
                 <PrimaryButton class="mt-4">Chirp</PrimaryButton>
             </form>
-            <FilterTabs/>
+            <Tabs :tabs="tabs"/>
             <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
                 <Chirp
                     v-for="chirp in chirps"
                     :key="chirp.id"
-                     :chirp="chirp"
+                    :chirp="chirp"
                 />
             </div>
         </div>

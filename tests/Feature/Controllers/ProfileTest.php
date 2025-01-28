@@ -128,6 +128,8 @@ class ProfileTest extends TestCase
         $user = User::factory()->create();
 
         $profileUser = User::factory()
+                ->has(User::factory()->count(2),'followers')
+                ->has(User::factory()->count(3),'following')
                 ->has(Chirp::Factory()->count(5))
                 ->create();
 
@@ -138,6 +140,8 @@ class ProfileTest extends TestCase
                 ->has('user', fn (Assert $page) => $page
                     ->where('id', $profileUser->id)
                     ->where('name', $profileUser->name)
+                    ->where('followers_count', $profileUser->followers()->count())
+                    ->where('following_count', $profileUser->following()->count())
                     ->missing('email')
                     ->missing('password')
                     ->etc()
@@ -157,7 +161,10 @@ class ProfileTest extends TestCase
 
     public function test_chirps_belonging_to_other_uses_are_not_included(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()
+                    ->has(User::factory()->count(2),'followers')
+                    ->has(User::factory()->count(3),'following')
+                    ->create();
 
         $otherUser = User::factory()
                     ->has(Chirp::Factory()->count(5))
@@ -170,6 +177,8 @@ class ProfileTest extends TestCase
                 ->has('user', fn (Assert $page) => $page
                     ->where('id', $user->id)
                     ->where('name', $user->name)
+                    ->where('followers_count', $user->followers()->count())
+                    ->where('following_count', $user->following()->count())
                     ->missing('email')
                     ->missing('password')
                     ->etc()

@@ -25,6 +25,16 @@ const unfollow = useForm({});
                        {{ dayjs(user.created_at).format('MMMM YYYY') }}
                        </time>
                     </p>
+                    <div class="mt-3 sm:mt-3">
+                       <Link :href="route('follow.index', user.id)">
+                           <span>{{ user.following_count }}</span>
+                           <span class="text-sm font-medium text-gray-500"> Following</span>
+                       </Link>
+                       <Link :href="route('followers', user.id)">
+                           <span class="ml-4">{{ user.followers_count }}</span>
+                           <span class="text-sm font-medium text-gray-500"> Followers</span>
+                       </Link>
+                   </div>
                  </div>
            </div>
            <div v-if="user.id === $page.props.auth.user.id" class="my-3 flex flex-col-reverse justify-stretch sm:mt-0 sm:pr-3">
@@ -34,13 +44,13 @@ const unfollow = useForm({});
                 <form v-if="!following" class="flex flex-col" @submit.prevent="follow.post(route('follow.store'), {
 
                     preserveScroll: true,
-                    only:['following']
+                    only:['following', 'user']
                 })">
                 <PrimaryButton class="justify-center">Follow</PrimaryButton>
                 </form>
                 <form v-else class="flex flex-col" @submit.prevent="unfollow.delete(route('follow.destroy', user.id), {
                     preserveScroll: true,
-                    only:['following']
+                    only:['following', 'user']
                 })">
                 <SecondaryButton class="justify-center" type='submit'>Unfollow</SecondaryButton>
                 </form>

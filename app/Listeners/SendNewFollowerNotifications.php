@@ -22,6 +22,10 @@ class SendNewFollowerNotifications
      */
     public function handle(UserFollowed $event): void
     {
+        if(!$event->user->hasVerifiedEmail()){
+            return;
+        }
+
         $event->user->notify(new NewFollower($event->follower));
     }
 }

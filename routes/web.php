@@ -27,8 +27,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user}', [ProfileController::class, 'show'])->middleware('verified')->name('profile.show');
 });
 
-Route::post('/follow', [FollowerController::class, 'store'])->middleware('verified')->name('follow.store');
-Route::delete('/unfollow/{user}', [FollowerController::class, 'destroy'])->middleware('verified')->name('follow.destroy');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('users/{user}/followers', [FollowerController::class, 'list'])->name('followers');
+    Route::get('users/{user}/following', [FollowerController::class, 'index'])->name('follow.index');
+    Route::post('/follow', [FollowerController::class, 'store'])->name('follow.store');
+    Route::delete('/unfollow/{user}', [FollowerController::class, 'destroy'])->name('follow.destroy');
+});
 
 Route::resource('chirps', ChirpController::class)
     ->only(['index', 'store', 'update', 'destroy'])

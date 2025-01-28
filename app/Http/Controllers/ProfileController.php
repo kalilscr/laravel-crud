@@ -65,8 +65,9 @@ class ProfileController extends Controller
 
     public function show(User $user): Response
     {
+        //error_log($user);
         return Inertia::render('Profile/Show',[
-            'user' => $user->only(['id', 'name', 'created_at']),
+            'user' => fn() => $user->loadCount(['followers', 'following'])->only(['id', 'name', 'created_at', 'followers_count', 'following_count']),
             'chirps' => $user->chirps()->latest()->get()->map(fn (Chirp $chirp) => $chirp->setRelation('user',$user)),
             'following' => auth()->user()->following()->where('user_id', $user->id)->exists(),
         ]);
