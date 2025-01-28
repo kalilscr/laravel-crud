@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Chirp;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,9 +16,26 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
+
+
+        User::factory()
+            ->has(Chirp::factory()->count(200))
+            ->has(
+                User::factory()
+                    ->count(30)
+                    ->has(Chirp::factory()->count(200)),
+                'following'
+            )
+            ->has(
+                User::factory()
+                    ->count(30)
+                    ->has(Chirp::factory()->count(200)),
+                'followers'
+            )
+            ->createQuietly(['email' => 'test@test.com']);
     }
 }
