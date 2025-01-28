@@ -1,14 +1,12 @@
 <script setup>
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Pagination from '@/Components/Pagination.vue';
 import Tabs from '@/Components/Tabs.vue';
 import  UserCard  from '@/Components/UserCard.vue'
 import { Link, Head } from '@inertiajs/vue3';
 
 const props = defineProps(['user', 'users', 'auth']);
-console.log(props.user);
-console.log(props.users);
-//console.log(props.auth);
 
 const tabs = [
     {href:route('followers', props.user.id), active:route().current('followers', props.user.id), text:'Followers'},
@@ -35,6 +33,7 @@ const tabs = [
                      :user="user"
                  />
             </div>
+            <!-- <Pagination :nextUrl="users.next_page_url" :prevUrl="users.prev_page_url"/> -->
         </div>
 
     </AuthenticatedLayout>

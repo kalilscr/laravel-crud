@@ -5,6 +5,7 @@ import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import Tabs from '@/Components/Tabs.vue';
 import { useForm, Head } from '@inertiajs/vue3';
+import Pagination from '@/Components/Pagination.vue';
 
 defineProps(['chirps']);
 
@@ -35,11 +36,12 @@ const form = useForm({
             <Tabs :tabs="tabs"/>
             <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
                 <Chirp
-                    v-for="chirp in chirps"
+                    v-for="chirp in chirps.data"
                     :key="chirp.id"
                     :chirp="chirp"
                 />
             </div>
+            <Pagination :nextUrl="chirps.next_page_url" :prevUrl="chirps.prev_page_url"/>
         </div>
     </AuthenticatedLayout>
 </template>

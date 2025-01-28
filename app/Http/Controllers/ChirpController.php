@@ -26,7 +26,7 @@ class ChirpController extends Controller
                      ->merge(auth()->id())
                     )
             )
-            ->latest()->get(),
+            ->latest()->simplePaginate(25)->withQueryString(),
         ]);
     }
 
@@ -83,7 +83,7 @@ class ChirpController extends Controller
 
         $chirp->update($validated);
 
-        return redirect(route('chirps.index'));
+        return back();
     }
 
     /**
@@ -95,6 +95,6 @@ class ChirpController extends Controller
 
         $chirp->delete();
 
-        return redirect(route('chirps.index'));
+        return back();
     }
 }
