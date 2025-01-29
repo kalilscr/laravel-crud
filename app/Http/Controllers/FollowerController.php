@@ -14,27 +14,11 @@ class FollowerController extends Controller
 {
     public function index(User $user): Response
     {
-
-        // $following = $user
-        // ->following()
-        // ->orderByPivot('created_at','desc')
-        // ->select('user_id as id', 'name')
-        // ->addSelect(['following' => function ($query) {
-        // $query->select('id as following')
-        //     ->from('followers')
-        //     ->whereColumn('follower_id', Auth()->id())
-        //     ->whereColumn('user_id', 'users.id');
-        // }])
-        // ->simplePaginate(25, []);
-        // $following->map(fn ($user) => $user->makeHidden('pivot'));
-
         $following = $user
                 ->following()
                 ->orderByPivot('created_at','desc')
                 ->get();
 
-
-        //error_log($following);
         return Inertia::render('Follow/Index', [
             'user' => $user->only(['id', 'name']),
             'users' => fn() => $following,
@@ -70,28 +54,10 @@ class FollowerController extends Controller
 
    public function list(User $user): Response
    {
-        // $followers = $user
-        // ->followers()
-        // ->orderByPivot('created_at','desc')
-        // ->select('follower_id as id', 'name')
-        // ->addSelect(['following' => function ($query) {
-        //     $query->select('id as following')
-        //         ->from('followers')
-        //         ->whereColumn('follower_id', Auth()->id())
-        //         ->whereColumn('user_id', 'users.id');
-        // }])
-        //         ->simplePaginate(25, []);
-        //         $followers->map(fn ($user) => $user->makeHidden('pivot'));
-
-
         $followers = $user
             ->followers()
             ->orderByPivot('created_at','desc')
             ->get();
-
-
-        //$loggedUserFollowers = auth()->user()->followers()->orderByPivot('created_at','desc')->get();
-
 
         return Inertia::render('Follow/Index', [
             'user' => $user->only(['id', 'name']),
